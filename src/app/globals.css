@@ -1,16 +1,70 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Lato:wght@300;400;700&display=swap');
+@import "tailwindcss";
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@theme {
+  --color-angelica-bg: #FAF7F2;
+  --color-angelica-text: #1A1A1A;
+  --color-angelica-gold: #D4AF37;
+
+  --font-serif: var(--font-fraunces), serif;
+  --font-sans: var(--font-inter), sans-serif;
 }
 
+/* 
+  Silent Luxury Reset 
+*/
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  @apply bg-angelica-bg text-angelica-text;
 }
+
+/* Animations extracted from page.tsx */
+@keyframes slowPan {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-slow-pan {
+  animation: slowPan 20s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Font definitions moved to @theme section if using Tailwind v4, but standard utility classes work too.
+   Since Tailwind v4 is used, we can keep the @theme config for vars.
+   The google font imports should ideally be in layout.tsx via next/font/google or imported here.
+   However, imports inside CSS can block rendering. Best practice is next/font/google in layout.tsx.
+   I will assume layout.tsx handles font loading or add the import here if needed.
+   The original code imported fonts via CSS. I will add that back here to be safe, though not optimal.
+*/
