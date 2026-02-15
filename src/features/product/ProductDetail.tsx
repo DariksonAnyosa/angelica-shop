@@ -90,21 +90,21 @@ export default function ProductDetail({
 
   // ── Visual Render ───────────────────────────────────────────
   return (
-    <div className="bg-angelica-bg min-h-screen animate-fade-in-up">
+    <div className="bg-white min-h-screen animate-fade-in-up">
       {/* ── Floating Back Button ── */}
-      <div className="fixed top-0 left-0 w-full z-50 p-4 md:p-6">
+      <div className="fixed top-0 left-0 w-full z-50 p-4 md:p-6 pointer-events-none">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-xs uppercase tracking-[0.15em] bg-white/80 backdrop-blur-md px-4 py-2.5 rounded-full shadow-luxe hover:shadow-luxe-lg hover:bg-white transition-all duration-300 ease-in-out text-[#4A3B32] font-medium"
+          className="pointer-events-auto flex items-center gap-2 text-xs uppercase tracking-[0.15em] bg-white border border-black px-5 py-3 hover:bg-black hover:text-white transition-all duration-300 ease-in-out text-black font-bold"
         >
           <ArrowLeft size={14} strokeWidth={1.5} /> Volver
         </button>
       </div>
 
       {/* ── Main 2-Column Layout ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-12 min-h-screen">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-0 min-h-screen">
         {/* ═══ LEFT: Image Gallery ═══ */}
-        <div className="md:h-screen md:sticky md:top-0 overflow-hidden">
+        <div className="md:h-screen md:sticky md:top-0 overflow-hidden bg-gray-50">
           {/* Mobile: Horizontal scroll gallery */}
           <div className="md:hidden">
             <div className="relative aspect-3/4 w-full">
@@ -117,15 +117,15 @@ export default function ProductDetail({
                 sizes="100vw"
               />
 
-              {/* Image dots indicator */}
+              {/* Image dots indicator (Square) */}
               {product.gallery && product.gallery.length > 1 && (
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
                   {product.gallery.map((_: string, i: number) => (
                     <button
                       key={i}
                       onClick={() => setActiveImageIndex(i)}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        i === activeImageIndex ? "bg-white w-6" : "bg-white/50"
+                      className={`w-2 h-2 transition-all duration-300 ${
+                        i === activeImageIndex ? "bg-black w-6" : "bg-white/50"
                       }`}
                       aria-label={`View image ${i + 1}`}
                     />
@@ -155,51 +155,53 @@ export default function ProductDetail({
         </div>
 
         {/* ═══ RIGHT: Product Information ═══ */}
-        <div className="px-6 py-10 md:px-12 md:py-0 md:h-screen md:flex md:flex-col md:justify-center md:sticky md:top-0">
+        <div className="px-6 py-10 md:px-16 md:py-0 md:h-screen md:flex md:flex-col md:justify-center md:sticky md:top-0 bg-white">
           <div className="max-w-lg mx-auto md:mx-0 w-full">
             {/* ── Collection Label ── */}
-            <p className="text-[10px] uppercase tracking-[0.3em] text-[#C19A6B] font-bold mb-4">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold mb-6">
               Nueva Colección
             </p>
 
             {/* ── Product Title (Serif, Large) ── */}
-            <h1 className="font-serif text-4xl md:text-5xl text-[#4A3B32] mb-3 text-balance leading-tight tracking-tight">
+            <h1 className="font-serif text-4xl md:text-5xl text-black mb-4 text-balance leading-tight tracking-tight">
               {product.name}
             </h1>
 
             {/* ── Price ── */}
-            <p className="text-2xl font-medium text-black mb-8">
+            <p className="text-xl md:text-2xl font-medium text-black mb-10">
               {product.price}
             </p>
 
             {/* ── Description ── */}
-            <div className="mb-8 space-y-4">
-              <p className="text-sm leading-relaxed text-gray-600">
+            <div className="mb-10 space-y-6">
+              <p className="text-sm leading-relaxed text-gray-800 font-sans">
                 {product.story || product.description}
               </p>
 
               {/* Stylist Note — accent border */}
               {product.stylistNote && (
-                <div className="p-4 bg-white border-l-2 border-[#C19A6B] italic text-xs text-[#4A3B32] rounded-r-xl shadow-luxe">
-                  <span className="font-bold not-italic block mb-1 uppercase tracking-[0.15em]">
+                <div className="p-5 border border-black bg-gray-50 text-xs text-black">
+                  <span className="font-bold block mb-2 uppercase tracking-[0.15em]">
                     Nota de la Estilista:
                   </span>
-                  {"\u201C"}
-                  {product.stylistNote}
-                  {"\u201D"}
+                  <span className="italic">
+                    {"\u201C"}
+                    {product.stylistNote}
+                    {"\u201D"}
+                  </span>
                 </div>
               )}
             </div>
 
             {/* ── Size Selector ── */}
-            <div className="mb-8">
+            <div className="mb-10">
               <div className="flex justify-between items-center mb-4">
-                <span className="text-xs font-bold uppercase tracking-[0.15em] text-[#4A3B32]">
+                <span className="text-xs font-bold uppercase tracking-[0.15em] text-black">
                   Talla
                 </span>
                 <button
                   onClick={() => setShowRealWomen(!showRealWomen)}
-                  className="text-[10px] uppercase tracking-[0.15em] text-[#C19A6B] hover:text-[#4A3B32] flex items-center gap-1 transition-all duration-300 ease-in-out"
+                  className="text-[10px] uppercase tracking-[0.15em] text-gray-500 hover:text-black flex items-center gap-1 transition-all duration-300 ease-in-out"
                 >
                   ¿Dudas con tu talla?{" "}
                   <ChevronDown
@@ -211,11 +213,11 @@ export default function ProductDetail({
 
               {/* Real Women Fit Guide */}
               {showRealWomen && product.realWomen && (
-                <div className="mb-6 bg-white p-4 rounded-xl animate-fade-in-up shadow-luxe">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.15em] mb-3 text-center text-gray-400">
+                <div className="mb-6 bg-gray-50 border border-black p-5 animate-fade-in-up">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.15em] mb-4 text-center text-gray-500">
                     Referencias Reales
                   </p>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {product.realWomen.map(
                       (
                         women: { name: string; height: string; note: string },
@@ -223,17 +225,17 @@ export default function ProductDetail({
                       ) => (
                         <div
                           key={i}
-                          className="flex gap-3 items-start text-xs border-b border-gray-100 last:border-0 pb-2 last:pb-0"
+                          className="flex gap-4 items-start text-xs border-b border-gray-200 last:border-0 pb-3 last:pb-0"
                         >
-                          <div className="w-8 h-8 rounded-full bg-gray-100 shrink-0" />
+                          <div className="w-8 h-8 bg-black shrink-0" />
                           <div>
-                            <span className="font-bold text-[#4A3B32]">
+                            <span className="font-bold text-black">
                               {women.name}
                             </span>{" "}
-                            <span className="text-gray-400">
+                            <span className="text-gray-500">
                               | {women.height}
                             </span>
-                            <p className="text-gray-500 mt-1">{women.note}</p>
+                            <p className="text-gray-600 mt-1">{women.note}</p>
                           </div>
                         </div>
                       ),
@@ -243,16 +245,21 @@ export default function ProductDetail({
               )}
 
               {/* Size Buttons — Minimal style */}
-              <div className="grid grid-cols-5 gap-2">
-                {availableSizes.map((size) => (
+              <div className="grid grid-cols-5 gap-0 border border-black">
+                {availableSizes.map((size, idx) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`py-3 flex items-center justify-center border text-xs font-medium rounded-md transition-all duration-300 ease-in-out
+                    className={`py-4 flex items-center justify-center text-xs font-bold transition-all duration-200
+                      ${
+                        idx !== availableSizes.length - 1
+                          ? "border-r border-black"
+                          : ""
+                      }
                       ${
                         selectedSize === size
-                          ? "border-[#4A3B32] bg-[#4A3B32] text-white shadow-luxe"
-                          : "border-gray-200 text-gray-500 hover:border-black hover:text-black"
+                          ? "bg-black text-white"
+                          : "bg-white text-black hover:bg-gray-100"
                       }`}
                   >
                     {size}
@@ -262,27 +269,27 @@ export default function ProductDetail({
 
               {/* Size Selection Hint */}
               {!selectedSize && (
-                <p className="text-[10px] text-gray-400 mt-2 uppercase tracking-widest">
-                  Selecciona tu talla
+                <p className="text-[10px] text-red-500 mt-2 uppercase tracking-widest font-medium">
+                  * Selecciona tu talla
                 </p>
               )}
             </div>
 
             {/* ── Action Buttons ── */}
-            <div className="flex gap-3 mb-10">
+            <div className="flex gap-0 mb-12">
               {/* Primary CTA — Add to Bag */}
               <button
                 disabled={product.isSoldOut || !selectedSize}
                 onClick={handleAddToCart}
-                className={`flex-1 py-4 rounded-full font-medium text-sm uppercase tracking-[0.2em] transition-all duration-300 ease-in-out flex items-center justify-center gap-2.5
+                className={`flex-1 py-5 font-bold text-xs uppercase tracking-[0.2em] transition-all duration-300 ease-in-out flex items-center justify-center gap-3 border border-black
                   ${
                     product.isSoldOut
-                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200"
                       : !selectedSize
-                        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                        ? "bg-white text-gray-300 cursor-not-allowed border-gray-200"
                         : isAdding
-                          ? "bg-[#C19A6B] text-white scale-95"
-                          : "bg-[#4A3B32] text-white hover:bg-[#C19A6B] hover:scale-[1.02] shadow-luxe hover:shadow-luxe-lg active:scale-95"
+                          ? "bg-black text-white"
+                          : "bg-black text-white hover:bg-white hover:text-black"
                   }`}
               >
                 <ShoppingBag size={16} strokeWidth={1.5} />
@@ -304,10 +311,10 @@ export default function ProductDetail({
                     image: product.img || product.gallery?.[0] || "",
                   });
                 }}
-                className={`w-14 flex items-center justify-center border rounded-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 ${
+                className={`w-16 flex items-center justify-center border-y border-r border-black transition-all duration-300 ease-in-out hover:bg-gray-50 ${
                   isInWishlist(String(product.id || productId))
-                    ? "border-[#C19A6B] bg-[#C19A6B]/10"
-                    : "border-gray-200 hover:border-red-300"
+                    ? "bg-black text-white"
+                    : "bg-white"
                 }`}
                 aria-label={
                   isInWishlist(String(product.id || productId))
@@ -316,12 +323,12 @@ export default function ProductDetail({
                 }
               >
                 <Heart
-                  size={18}
-                  strokeWidth={1.5}
+                  size={20}
+                  strokeWidth={1}
                   className={`transition-colors duration-300 ${
                     isInWishlist(String(product.id || productId))
-                      ? "text-[#C19A6B] fill-[#C19A6B]"
-                      : "text-gray-400 hover:text-red-400"
+                      ? "text-white fill-white"
+                      : "text-black hover:text-gray-500"
                   }`}
                 />
               </button>
@@ -329,32 +336,32 @@ export default function ProductDetail({
 
             {/* ── Cross-Sell (Complete the Look) ── */}
             {product.crossSell && (
-              <div className="pt-8 border-t border-gray-100">
-                <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-4 text-[#C19A6B]">
+              <div className="pt-8 border-t border-black">
+                <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-6 text-black">
                   Completa el Look
                 </p>
-                <div className="flex gap-4 items-center bg-white p-3 rounded-2xl group hover:shadow-luxe-lg transition-all duration-300 ease-in-out cursor-pointer shadow-luxe">
-                  <div className="w-16 h-16 bg-gray-50 overflow-hidden rounded-xl relative shrink-0">
+                <div className="flex gap-0 items-center bg-white border border-black p-0 group hover:bg-gray-50 transition-all duration-300 ease-in-out cursor-pointer">
+                  <div className="w-24 h-24 bg-gray-50 overflow-hidden relative shrink-0 border-r border-black">
                     <NextImage
                       src={product.crossSell.img}
                       alt={product.crossSell.name}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                     />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-serif text-[#4A3B32] text-sm">
+                  <div className="flex-1 min-w-0 px-6 py-4">
+                    <p className="font-serif text-black text-lg tracking-tight">
                       {product.crossSell.name}
                     </p>
-                    <p className="text-[10px] text-gray-400 line-clamp-1 mt-0.5">
+                    <p className="text-[10px] text-gray-500 line-clamp-1 mt-1 uppercase tracking-wider">
                       {product.crossSell.description}
                     </p>
-                    <p className="text-xs font-medium text-black mt-1">
+                    <p className="text-sm font-bold text-black mt-2">
                       {product.crossSell.price}
                     </p>
                   </div>
-                  <div className="h-8 w-8 rounded-full bg-[#4A3B32] text-white flex items-center justify-center hover:bg-[#C19A6B] transition-all duration-300 ease-in-out shadow-luxe hover:scale-110 shrink-0">
-                    <Plus size={14} />
+                  <div className="h-24 w-16 border-l border-black flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 ease-in-out shrink-0">
+                    <Plus size={20} strokeWidth={1} />
                   </div>
                 </div>
               </div>

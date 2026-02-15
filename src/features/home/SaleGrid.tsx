@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Heart, Eye } from "lucide-react";
+import { Heart } from "lucide-react";
 import NextImage from "next/image";
 import { SanityProduct } from "@/lib/types";
 import { useWishlist } from "@/context/WishlistContext";
@@ -110,7 +110,7 @@ export default function SaleGrid({
       <div className="w-full px-6 md:px-12 mb-10">
         <div className="flex items-center justify-between border-b border-gray-200 pb-4">
           {/* Left: Filter */}
-          <button className="flex items-center gap-2 text-xs uppercase tracking-[0.12em] font-medium text-[#2A2A2A] hover:opacity-60 transition-all duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-xl">
+          <button className="flex items-center gap-2 text-xs uppercase tracking-[0.12em] font-medium text-black hover:opacity-60 transition-all duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2">
             <span>Filtros</span>
             <span className="text-lg leading-none">+</span>
           </button>
@@ -156,9 +156,9 @@ export default function SaleGrid({
       </div>
 
       {/* ── Product Grid ── */}
-      <div className="w-full px-3 md:px-6">
+      <div className="w-full px-0 md:px-4">
         <div
-          className={`grid gap-x-3 gap-y-10 ${
+          className={`grid gap-px bg-gray-100 border-t border-gray-100 ${
             gridView === "2"
               ? "grid-cols-1 md:grid-cols-2"
               : "grid-cols-2 lg:grid-cols-4"
@@ -167,13 +167,13 @@ export default function SaleGrid({
           {displayProducts.map((product) => (
             <div
               key={product.id}
-              className="group relative cursor-pointer"
+              className="group relative cursor-pointer bg-white p-4"
               onClick={() => onSelectProduct(product.id)}
               onMouseEnter={() => setHoveredId(product.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              {/* ── Image Container ── */}
-              <div className="relative aspect-3/4 overflow-hidden rounded-xl bg-gray-50">
+              {/* ── Image Container (Square) ── */}
+              <div className="relative aspect-3/4 overflow-hidden bg-gray-50 mb-4">
                 {/* Primary Image */}
                 <NextImage
                   src={product.img}
@@ -184,7 +184,7 @@ export default function SaleGrid({
                       ? "(max-width: 768px) 100vw, 50vw"
                       : "(max-width: 768px) 50vw, 25vw"
                   }
-                  className={`object-cover w-full h-full transition-all duration-700 ease-out group-hover:scale-105 ${
+                  className={`object-cover w-full h-full transition-opacity duration-300 ${
                     hoveredId === product.id ? "opacity-0" : "opacity-100"
                   }`}
                 />
@@ -199,24 +199,20 @@ export default function SaleGrid({
                       ? "(max-width: 768px) 100vw, 50vw"
                       : "(max-width: 768px) 50vw, 25vw"
                   }
-                  className={`object-cover w-full h-full transition-all duration-700 ease-out group-hover:scale-105 ${
+                  className={`object-cover w-full h-full transition-opacity duration-300 ${
                     hoveredId === product.id ? "opacity-100" : "opacity-0"
                   }`}
                 />
 
                 {/* ── Badge: NEW (top-left) ── */}
                 {product.isNew && (
-                  <span className="absolute top-3 left-3 z-10 bg-white/80 backdrop-blur-sm text-[10px] uppercase tracking-widest px-2 py-1 rounded-full text-[#4A3B32] font-medium">
+                  <span className="absolute top-0 left-0 z-10 bg-black text-white text-[9px] uppercase tracking-widest px-2 py-1 font-bold">
                     New
                   </span>
                 )}
 
                 <button
-                  className={`absolute top-3 right-3 z-10 bg-white/80 backdrop-blur-sm p-2 rounded-full transition-all duration-300 ease-out opacity-100 md:opacity-0 translate-y-0 md:-translate-y-2 active:scale-95 ${
-                    hoveredId === product.id
-                      ? "md:opacity-100 md:translate-y-0"
-                      : ""
-                  }`}
+                  className="absolute top-2 right-2 z-10 p-2 hover:bg-gray-100 transition-colors"
                   onClick={(e) => {
                     e.stopPropagation();
                     const priceStr =
@@ -236,79 +232,60 @@ export default function SaleGrid({
                 >
                   <Heart
                     size={16}
-                    strokeWidth={1.5}
+                    strokeWidth={1}
                     className={`transition-colors duration-300 ${
                       isInWishlist(String(product.id))
-                        ? "text-[#C19A6B] fill-[#C19A6B]"
-                        : "text-[#4A3B32] hover:text-red-400"
+                        ? "text-black fill-black"
+                        : "text-black hover:text-gray-600"
                     }`}
                   />
                 </button>
 
-                {/* ── Glassmorphism CTA (slides up on hover) ── */}
+                {/* ── CTA (Flat Bottom) ── */}
                 <div
-                  className={`absolute bottom-3 md:bottom-4 left-0 right-0 mx-auto w-[90%] z-10 transition-all duration-500 ease-out opacity-100 translate-y-0 md:opacity-0 md:translate-y-4 ${
+                  className={`absolute bottom-0 left-0 right-0 w-full bg-white border-t border-black transition-transform duration-300 ${
                     hoveredId === product.id
-                      ? "md:opacity-100 md:translate-y-0"
-                      : ""
+                      ? "translate-y-0"
+                      : "translate-y-full"
                   }`}
                 >
                   <button
-                    className="w-full bg-white/90 backdrop-blur-md text-black py-2.5 md:py-3 rounded-lg font-medium text-[10px] md:text-xs uppercase tracking-[0.15em] shadow-lg hover:bg-white transition-colors flex items-center justify-center gap-2"
+                    className="w-full text-black py-3 font-bold text-[10px] uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:bg-black hover:text-white transition-colors"
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectProduct(product.id);
                     }}
                   >
-                    <Eye size={14} strokeWidth={1.5} />
                     Ver Producto
                   </button>
                 </div>
               </div>
 
-              {/* ── Product Info (below image) ── */}
-              <div className="pt-4 px-1">
+              {/* ── Product Info ── */}
+              <div className="text-center">
                 {/* Name */}
-                <h3 className="font-serif text-base md:text-lg tracking-wide text-[#4A3B32] mb-1 line-clamp-1">
+                <h3 className="font-sans text-xs uppercase tracking-widest text-black mb-1">
                   {product.name}
                 </h3>
 
                 {/* Price */}
-                <p className="font-medium text-black text-sm mb-2">
+                <p className="font-serif text-sm text-gray-600 mb-2">
                   {product.price}
                 </p>
 
-                {/* Color Swatches */}
+                {/* Color Swatches (Square) */}
                 {product.colors.length > 0 && (
-                  <div className="flex gap-1.5 pt-1">
+                  <div className="flex justify-center gap-1 pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     {product.colors.map((color, idx) => (
                       <div
                         key={idx}
-                        className="w-3.5 h-3.5 rounded-full border border-gray-200 transition-transform duration-300 hover:scale-125"
+                        className="w-3 h-3 border border-gray-300 transform hover:scale-110 transition-transform"
                         style={{ backgroundColor: color }}
                         aria-label={`Color: ${color}`}
                       />
                     ))}
                   </div>
                 )}
-
-                {/* Sizes — slide in on hover */}
-                <div
-                  className={`flex gap-2 pt-2 transition-all duration-300 ease-out ${
-                    hoveredId === product.id
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-1"
-                  }`}
-                >
-                  {product.sizes.map((size: string) => (
-                    <span
-                      key={size}
-                      className="text-[10px] uppercase tracking-widest text-gray-400"
-                    >
-                      {size}
-                    </span>
-                  ))}
-                </div>
               </div>
             </div>
           ))}

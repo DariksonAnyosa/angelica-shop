@@ -1,9 +1,5 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { HOME_V2 } from "@/lib/data";
-import { HomeConfig } from "@/lib/types";
-import { getHomeConfig } from "@/lib/sanity.queries";
 
 export default function HeroDynamic({
   onExplore,
@@ -11,97 +7,89 @@ export default function HeroDynamic({
   onExplore: () => void;
   onViewChange?: (view: string) => void;
 }) {
-  // ── Data Logic (preserved) ──────────────────────────────────
-  const [cmsData, setCmsData] = useState<HomeConfig | null>(null);
+  // ── Scroll Parallax Logic ──
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    getHomeConfig().then((data) => {
-      if (data) setCmsData(data);
-    });
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const hero = (cmsData || HOME_V2.hero) as HomeConfig;
+  // Calculate opacity and transform for parallax effect
+  const opacity = Math.max(0, 1 - scrollY / 800);
+  const transform = `translateY(${scrollY * 0.5}px)`;
 
-  // Responsive image logic
-  const desktopImg = hero.heroCommonImage || hero.mediaUrl || "/hero.png";
-  const mobileImg = hero.heroMobileImage || desktopImg;
+  // High quality Unsplash image (Elle & Riley style)
+  const heroImage = "/hero.png";
 
   // Announcement / subtitle text
-  const announcement =
-    hero.heroAnnouncement || "Beautifully crafted cashmere for every season.";
+  const announcement = "Beautifully crafted cashmere for every season.";
+  const title = "TIMELESS ELEGANCE";
+  const buttonText = "EXPLORAR COLECCIÓN";
 
   // ── Visual Render ───────────────────────────────────────────
   return (
-    <section className="relative h-[90vh] w-full overflow-hidden">
-      {/* ── Background Image (Next/Image with priority for LCP) ── */}
-      {/* Desktop */}
-      <Image
-        src={desktopImg}
-        alt="Hero Background"
-        fill
-        priority
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-        className="hidden md:block object-cover w-full h-full animate-slow-pan"
-      />
-      {/* Mobile */}
-      <Image
-        src={mobileImg}
-        alt="Hero Background Mobile"
-        fill
-        priority
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-        className="block md:hidden object-cover w-full h-full"
-      />
-
-      {/* ── Cinematic Overlay ── */}
-      <div className="absolute inset-0 bg-black/20 z-10" />
-
-      {/* ── Vignette — subtle radial gradient for depth ── */}
+    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-black">
+      {/* ── Parallax Container (Image + Content) ── */}
       <div
-        className="absolute inset-0 z-10 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.35) 100%)",
-        }}
-      />
+        className="relative w-full h-full flex items-center justify-center"
+        style={{ opacity, transform }}
+      >
+        {/* ── Background Image ── */}
+        <Image
+          src={heroImage}
+          alt="Elegant woman in minimal cashmere fashion"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover w-full h-full"
+        />
 
-      {/* ── Content — Bottom-left anchored with fade-in-up ── */}
-      <div className="absolute inset-0 z-20 flex items-end">
-        <div className="w-full px-6 md:px-16 pb-16 md:pb-24">
-          <div className="max-w-2xl animate-fade-in-up">
+        {/* ── Cinematic Overlay ── */}
+        <div className="absolute inset-0 bg-black/30 z-10" />
+
+        {/* ── Content (Centered) ── */}
+        <div className="absolute inset-0 z-20 flex items-center justify-center text-center">
+          <div className="max-w-4xl mx-auto px-6 animate-fade-in-up">
             {/* Subtitle / Announcement */}
-            <p className="text-lg md:text-xl font-medium tracking-wide text-white/90 mb-4 drop-shadow-sm">
+            <p className="text-sm md:text-base uppercase tracking-[0.2em] font-medium text-white mb-6 drop-shadow-md">
               {announcement}
             </p>
 
             {/* Main Title — Imposing Typography */}
-            <h1 className="font-serif text-5xl md:text-7xl font-light tracking-tight text-white drop-shadow-md leading-[1.1] mb-8">
-              {hero.heroTitle || hero.title}
+            <h1 className="font-serif text-5xl md:text-7xl font-light tracking-tight text-white drop-shadow-lg leading-[1.1] mb-10">
+              {title}
             </h1>
 
-            {/* CTA Button — Luxury Pill */}
+            {/* CTA Button — Minimal White Border */}
             <button
               onClick={onExplore}
-              className="bg-white text-black px-8 py-4 rounded-full font-medium text-sm uppercase tracking-[0.2em] transition-all duration-300 hover:bg-[#C19A6B] hover:text-white hover:scale-105 shadow-[0_8px_30px_rgb(0,0,0,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+              className="bg-transparent text-white px-10 py-4 border border-white hover:bg-white hover:text-black transition-all duration-300 uppercase tracking-[0.2em] text-xs font-bold"
             >
-              {hero.heroButtonText || hero.buttonText || "Explorar"}
+              {buttonText}
             </button>
           </div>
         </div>
       </div>
 
-      {/* ── Scroll hint — subtle animated chevron ── */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 animate-shimmer">
+      {/* ── Scroll hint — simplified (Fixed position, doesn't scroll away immediately) ── */}
+      <div
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 animate-bounce transition-opacity duration-300"
+        style={{ opacity: Math.max(0, 1 - scrollY / 300) }}
+      >
         <svg
           width="24"
           height="24"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="rgba(255,255,255,0.6)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="drop-shadow-sm"
+          stroke="white"
+          strokeWidth="1"
+          strokeLinecap="square"
+          strokeLinejoin="miter"
         >
           <polyline points="6 9 12 15 18 9" />
         </svg>

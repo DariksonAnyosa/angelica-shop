@@ -2,18 +2,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-angelica-bg: #fdfbf7;
-  --color-angelica-text: #1a1a1a;
-  --color-angelica-gold: #c19a6b;
-  --color-angelica-brown: #4a3b32;
+  --color-angelica-bg: #ffffff;
+  --color-angelica-text: #000000;
 
   --font-serif: var(--font-fraunces), "Playfair Display", serif;
   --font-sans: var(--font-inter), "Lato", sans-serif;
-
-  /* Luxury shadow tokens */
-  --shadow-luxe: 0 8px 30px rgb(0 0 0 / 0.08);
-  --shadow-luxe-lg: 0 12px 40px rgb(0 0 0 / 0.12);
-  --shadow-luxe-xl: 0 20px 60px rgb(0 0 0 / 0.1);
 }
 
 /* ─── Silent Luxury Reset ─── */
@@ -39,40 +32,33 @@ input,
 }
 
 .luxury-subheading {
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  font-weight: 600;
-  font-size: 0.6875rem; /* 11px */
+  @apply tracking-widest uppercase font-semibold text-[11px];
 }
 
-/* ─── Soft Luxury Shadows ─── */
-.shadow-luxe {
-  box-shadow: var(--shadow-luxe);
-}
-.shadow-luxe-lg {
-  box-shadow: var(--shadow-luxe-lg);
-}
-.shadow-luxe-xl {
-  box-shadow: var(--shadow-luxe-xl);
-}
-
-/* ─── Luxury Card ─── */
+/* ─── Luxury Card (Flat & Square) ─── */
 .luxury-card {
-  border-radius: 1rem; /* rounded-2xl equivalent */
-  box-shadow: var(--shadow-luxe);
-  transition:
-    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
-    transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0;
+  border: 1px solid #e5e5e5;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .luxury-card:hover {
-  box-shadow: var(--shadow-luxe-lg);
-  transform: translateY(-2px);
+  border-color: #000000;
 }
 
-/* ─── Luxury Button ─── */
+/* ─── Luxury Button (Flat & Square) ─── */
 .luxury-btn {
-  border-radius: 0.75rem; /* rounded-xl equivalent */
+  border-radius: 0;
+  border: 1px solid #000000;
+  background-color: #ffffff;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.luxury-btn:hover {
+  background-color: #000000;
+  color: #ffffff;
 }
 
 /* ─── Animations ─── */
